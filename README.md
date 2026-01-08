@@ -1,11 +1,11 @@
 <div align="center">
     <img src="./media/logo_small.webp"/>
-    <h1>🌱 Spec Kit</h1>
-    <h3><em>Build high-quality software faster.</em></h3>
+    <h1>✍️ Write Kit</h1>
+    <h3><em>Write compelling novels with AI assistance.</em></h3>
 </div>
 
 <p align="center">
-    <strong>An effort to allow organizations to focus on product scenarios rather than writing undifferentiated code with the help of Spec-Driven Development.</strong>
+    <strong>A structured approach to novel writing that guides you through character development, plot structure, and compelling storytelling using the proven 24-chapter framework.</strong>
 </p>
 
 [![Release](https://github.com/github/spec-kit/actions/workflows/release.yml/badge.svg)](https://github.com/github/spec-kit/actions/workflows/release.yml)
@@ -31,13 +31,13 @@
 - [🙏 Acknowledgements](#-acknowledgements)
 - [📄 License](#-license)
 
-## 🤔 What is Spec-Driven Development?
+## 📚 What is Structured Novel Writing?
 
-Spec-Driven Development **flips the script** on traditional software development. For decades, code has been king — specifications were just scaffolding we built and discarded once the "real work" of coding began. Spec-Driven Development changes this: **specifications become executable**, directly generating working implementations rather than just guiding them.
+Structured Novel Writing **transforms the creative process** by providing a proven framework for storytelling. Instead of staring at a blank page, you follow a systematic approach that guides you through character development, plot structure, and narrative pacing. The **24-chapter framework becomes your roadmap**, ensuring your story hits all the essential beats while maintaining your unique creative voice.
 
 ## ⚡ Get started
 
-### 1. Install Specify
+### 1. Install WriteKit
 
 Choose your preferred installation method:
 
@@ -46,14 +46,14 @@ Choose your preferred installation method:
 Install once and use everywhere:
 
 ```bash
-uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+uv tool install writekit-cli --from git+https://github.com/github/write-kit.git
 ```
 
 Then use the tool directly:
 
 ```bash
-specify init <PROJECT_NAME>
-specify check
+writekit init <NOVEL_NAME>
+writekit check
 ```
 
 #### Option 2: One-time Usage
@@ -61,7 +61,7 @@ specify check
 Run directly without installing:
 
 ```bash
-uvx --from git+https://github.com/github/spec-kit.git specify init <PROJECT_NAME>
+uvx --from git+https://github.com/github/write-kit.git writekit init <NOVEL_NAME>
 ```
 
 **Benefits of persistent installation:**
@@ -71,47 +71,47 @@ uvx --from git+https://github.com/github/spec-kit.git specify init <PROJECT_NAME
 - Better tool management with `uv tool list`, `uv tool upgrade`, `uv tool uninstall`
 - Cleaner shell configuration
 
-### 2. Establish project principles
+### 2. Define your novel's themes
 
-Use the **`/constitution`** command to create your project's governing principles and development guidelines that will guide all subsequent development.
-
-```bash
-/constitution Create principles focused on code quality, testing standards, user experience consistency, and performance requirements
-```
-
-### 3. Create the spec
-
-Use the **`/specify`** command to describe what you want to build. Focus on the **what** and **why**, not the tech stack.
+Use the **`/themes`** command to establish your novel's core themes, genre conventions, and narrative voice that will guide your storytelling.
 
 ```bash
-/specify Build an application that can help me organize my photos in separate photo albums. Albums are grouped by date and can be re-organized by dragging and dropping on the main page. Albums are never in other nested albums. Within each album, photos are previewed in a tile-like interface.
+/themes Create themes focused on redemption, found family, and overcoming personal fears in a fantasy adventure setting
 ```
 
-### 4. Create a technical implementation plan
+### 3. Develop your premise
 
-Use the **`/plan`** command to provide your tech stack and architecture choices.
+Use the **`/premise`** command to establish your novel's core concept. Focus on the **who**, **what**, and **why** of your story.
 
 ```bash
-/plan The application uses Vite with minimal number of libraries. Use vanilla HTML, CSS, and JavaScript as much as possible. Images are not uploaded anywhere and metadata is stored in a local SQLite database.
+/premise A young librarian discovers she can enter the worlds of books, but each journey risks trapping her forever. She must master this ability to save her missing sister who disappeared into a dark fantasy novel.
 ```
 
-### 5. Break down into tasks
+### 4. Create your story outline
 
-Use **`/tasks`** to create an actionable task list from your implementation plan.
+Use the **`/outline`** command to structure your novel using the proven 24-chapter framework.
 
 ```bash
-/tasks
+/outline Use the hero's journey structure with three acts. Focus on character growth through adversity, building relationships, and escalating magical conflicts. Target 80,000 words with chapters averaging 3,500 words each.
 ```
 
-### 6. Execute implementation
+### 5. Plan your scenes
 
-Use **`/implement`** to execute all tasks and build your feature according to the plan.
+Use **`/scenes`** to break each chapter into detailed scene-by-scene beats.
 
 ```bash
-/implement
+/scenes
 ```
 
-For detailed step-by-step instructions, see our [comprehensive guide](./spec-driven.md).
+### 6. Write your novel
+
+Use **`/write`** to generate prose for each chapter according to your outline and scene plans.
+
+```bash
+/write
+```
+
+For detailed step-by-step instructions, see our [comprehensive guide](./novel-writing.md).
 
 ## 📽️ Video Overview
 
@@ -135,22 +135,22 @@ Want to see Spec Kit in action? Watch our [video overview](https://www.youtube.c
 | [Roo Code](https://roocode.com/)                          | ✅ |                                                   |
 | [Codex CLI](https://github.com/openai/codex)              | ⚠️ | Codex [does not support](https://github.com/openai/codex/issues/2890) custom arguments for slash commands.  |
 
-## 🔧 Specify CLI Reference
+## ✍️ WriteKit CLI Reference
 
-The `specify` command supports the following options:
+The `writekit` command supports the following options:
 
 ### Commands
 
 | Command     | Description                                                    |
 |-------------|----------------------------------------------------------------|
-| `init`      | Initialize a new Specify project from the latest template      |
+| `init`      | Initialize a new WriteKit novel project from the latest template |
 | `check`     | Check for installed tools (`git`, `claude`, `gemini`, `code`/`code-insiders`, `cursor-agent`, `windsurf`, `qwen`, `opencode`, `codex`) |
 
-### `specify init` Arguments & Options
+### `writekit init` Arguments & Options
 
 | Argument/Option        | Type     | Description                                                                  |
 |------------------------|----------|------------------------------------------------------------------------------|
-| `<project-name>`       | Argument | Name for your new project directory (optional if using `--here`)            |
+| `<novel-name>`         | Argument | Name for your new novel directory (optional if using `--here`)              |
 | `--ai`                 | Option   | AI assistant to use: `claude`, `gemini`, `copilot`, `cursor`, `qwen`, `opencode`, `codex`, `windsurf`, `kilocode`, `auggie`, or `roo` |
 | `--script`             | Option   | Script variant to use: `sh` (bash/zsh) or `ps` (PowerShell)                 |
 | `--ignore-agent-tools` | Flag     | Skip checks for AI agent tools like Claude Code                             |
@@ -164,68 +164,68 @@ The `specify` command supports the following options:
 ### Examples
 
 ```bash
-# Basic project initialization
-specify init my-project
+# Basic novel initialization
+writekit init my-fantasy-novel
 
 # Initialize with specific AI assistant
-specify init my-project --ai claude
+writekit init my-mystery --ai claude
 
 # Initialize with Cursor support
-specify init my-project --ai cursor
+writekit init romance-story --ai cursor
 
 # Initialize with Windsurf support
-specify init my-project --ai windsurf
+writekit init sci-fi-epic --ai windsurf
 
 # Initialize with PowerShell scripts (Windows/cross-platform)
-specify init my-project --ai copilot --script ps
+writekit init my-novel --ai copilot --script ps
 
 # Initialize in current directory
-specify init --here --ai copilot
+writekit init --here --ai copilot
 
 # Force merge into current (non-empty) directory without confirmation
-specify init --here --force --ai copilot
+writekit init --here --force --ai copilot
 
 # Skip git initialization
-specify init my-project --ai gemini --no-git
+writekit init my-novel --ai gemini --no-git
 
 # Enable debug output for troubleshooting
-specify init my-project --ai claude --debug
+writekit init my-novel --ai claude --debug
 
 # Use GitHub token for API requests (helpful for corporate environments)
-specify init my-project --ai claude --github-token ghp_your_token_here
+writekit init my-novel --ai claude --github-token ghp_your_token_here
 
 # Check system requirements
-specify check
+writekit check
 ```
 
 ### Available Slash Commands
 
-After running `specify init`, your AI coding agent will have access to these slash commands for structured development:
+After running `writekit init`, your AI writing assistant will have access to these slash commands for structured novel writing:
 
 | Command         | Description                                                           |
 |-----------------|-----------------------------------------------------------------------|
-| `/constitution` | Create or update project governing principles and development guidelines |
-| `/specify`      | Define what you want to build (requirements and user stories)        |
-| `/clarify`      | Clarify underspecified areas (must be run before `/plan` unless explicitly skipped; formerly `/quizme`) |
-| `/plan`         | Create technical implementation plans with your chosen tech stack     |
-| `/tasks`        | Generate actionable task lists for implementation                     |
-| `/analyze`      | Cross-artifact consistency & coverage analysis (run after /tasks, before /implement) |
-| `/implement`    | Execute all tasks to build the feature according to the plan         |
+| `/themes`       | Define your novel's themes, genre, and narrative style guidelines     |
+| `/premise`      | Develop your story concept, characters, and central conflict          |
+| `/develop`      | Deepen character backgrounds, world-building, and plot details        |
+| `/outline`      | Create structured 24-chapter outline following the three-act framework |
+| `/scenes`       | Break chapters into detailed scene-by-scene beats and sequences       |
+| `/review`       | Analyze story consistency, pacing, and character arc completion       |
+| `/write`        | Generate prose for chapters based on your outline and scene plans     |
 
 ### Environment Variables
 
 | Variable         | Description                                                                                    |
 |------------------|------------------------------------------------------------------------------------------------|
-| `SPECIFY_FEATURE` | Override feature detection for non-Git repositories. Set to the feature directory name (e.g., `001-photo-albums`) to work on a specific feature when not using Git branches.<br/>**Must be set in the context of the agent you're working with prior to using `/plan` or follow-up commands. |
+| `WRITEKIT_NOVEL` | Override novel detection for non-Git repositories. Set to the novel directory name (e.g., `001-fantasy-quest`) to work on a specific novel when not using Git branches.<br/>**Must be set in the context of the agent you're working with prior to using `/outline` or follow-up commands. |
 
 ## 📚 Core philosophy
 
-Spec-Driven Development is a structured process that emphasizes:
+Structured Novel Writing is a systematic approach that emphasizes:
 
-- **Intent-driven development** where specifications define the "_what_" before the "_how_"
-- **Rich specification creation** using guardrails and organizational principles
-- **Multi-step refinement** rather than one-shot code generation from prompts
-- **Heavy reliance** on advanced AI model capabilities for specification interpretation
+- **Story-driven development** where themes and character arcs define the "_why_" before the "_what_"
+- **Rich narrative creation** using proven storytelling frameworks and character development
+- **Multi-phase refinement** rather than one-shot prose generation from prompts
+- **Heavy reliance** on advanced AI model capabilities for creative writing assistance
 
 ## 🌟 Development phases
 
@@ -237,44 +237,46 @@ Spec-Driven Development is a structured process that emphasizes:
 
 ## 🎯 Experimental goals
 
-Our research and experimentation focus on:
+Our approach supports diverse creative objectives:
 
-### Technology independence
+### Genre flexibility
 
-- Create applications using diverse technology stacks
-- Validate the hypothesis that Spec-Driven Development is a process not tied to specific technologies, programming languages, or frameworks
+- Create novels across all genres and subgenres
+- Validate that structured writing works for literary fiction, genre fiction, and experimental narratives
+- Support different narrative styles and voice approaches
 
-### Enterprise constraints
+### Publishing pathways
 
-- Demonstrate mission-critical application development
-- Incorporate organizational constraints (cloud providers, tech stacks, engineering practices)
-- Support enterprise design systems and compliance requirements
+- Support traditional publishing manuscript requirements
+- Accommodate self-publishing workflow needs
+- Include industry-standard formatting and submission guidelines
 
-### User-centric development
+### Writer-centric approach
 
-- Build applications for different user cohorts and preferences
-- Support various development approaches (from vibe-coding to AI-native development)
+- Support writers at all experience levels
+- Accommodate different creative processes (pantsers to plotters)
+- Provide flexible frameworks that enhance rather than constrain creativity
 
-### Creative & iterative processes
+### Collaborative & iterative processes
 
-- Validate the concept of parallel implementation exploration
-- Provide robust iterative feature development workflows
-- Extend processes to handle upgrades and modernization tasks
+- Enable co-writing and collaborative novel development
+- Provide robust revision and editing workflows
+- Support beta reader feedback integration and manuscript evolution
 
 ## 🔧 Prerequisites
 
 - **Linux/macOS** (or WSL2 on Windows)
-- AI coding agent: [Claude Code](https://www.anthropic.com/claude-code), [GitHub Copilot](https://code.visualstudio.com/), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [Cursor](https://cursor.sh/), [Qwen CLI](https://github.com/QwenLM/qwen-code), [opencode](https://opencode.ai/), [Codex CLI](https://github.com/openai/codex), or [Windsurf](https://windsurf.com/)
+- AI writing assistant: [Claude Code](https://www.anthropic.com/claude-code), [GitHub Copilot](https://code.visualstudio.com/), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [Cursor](https://cursor.sh/), [Qwen CLI](https://github.com/QwenLM/qwen-code), [opencode](https://opencode.ai/), [Codex CLI](https://github.com/openai/codex), or [Windsurf](https://windsurf.com/)
 - [uv](https://docs.astral.sh/uv/) for package management
 - [Python 3.11+](https://www.python.org/downloads/)
 - [Git](https://git-scm.com/downloads)
 
-If you encounter issues with an agent, please open an issue so we can refine the integration.
+If you encounter issues with a writing assistant, please open an issue so we can refine the integration.
 
 ## 📖 Learn more
 
-- **[Complete Spec-Driven Development Methodology](./spec-driven.md)** - Deep dive into the full process
-- **[Detailed Walkthrough](#-detailed-process)** - Step-by-step implementation guide
+- **[Complete Structured Novel Writing Methodology](./novel-writing.md)** - Deep dive into the full creative process
+- **[Detailed Walkthrough](#-detailed-process)** - Step-by-step novel writing guide
 
 ---
 

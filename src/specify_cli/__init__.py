@@ -10,16 +10,16 @@
 # ]
 # ///
 """
-Specify CLI - Setup tool for Specify projects
+WriteKit CLI - Setup tool for novel writing projects
 
 Usage:
-    uvx specify-cli.py init <project-name>
-    uvx specify-cli.py init --here
+    uvx writekit-cli.py init <novel-name>
+    uvx writekit-cli.py init --here
 
 Or install globally:
-    uv tool install --from specify-cli.py specify-cli
-    specify init <project-name>
-    specify init --here
+    uv tool install --from writekit-cli.py writekit-cli
+    writekit init <novel-name>
+    writekit init --here
 """
 
 import os
@@ -84,15 +84,15 @@ CLAUDE_LOCAL_PATH = Path.home() / ".claude" / "local" / "claude"
 
 # ASCII Art Banner
 BANNER = """
-███████╗██████╗ ███████╗ ██████╗██╗███████╗██╗   ██╗
-██╔════╝██╔══██╗██╔════╝██╔════╝██║██╔════╝╚██╗ ██╔╝
-███████╗██████╔╝█████╗  ██║     ██║█████╗   ╚████╔╝ 
-╚════██║██╔═══╝ ██╔══╝  ██║     ██║██╔══╝    ╚██╔╝  
-███████║██║     ███████╗╚██████╗██║██║        ██║   
-╚══════╝╚═╝     ╚══════╝ ╚═════╝╚═╝╚═╝        ╚═╝   
+███████╗███████╗ ███████╗███████╗██████╗ ██╗  ██╗███████╗
+██╔════╝██╔════╝ ██╔════╝██╔════╝██╔══██╗██║ ██╔╝██╔════╝
+███████╗█████╗   █████╗  ███████╗██████╔╝█████╔╝ █████╗
+██╔════╝██╔══╝   ██╔══╝  ╚════██║██╔══██╗██╔══██╗██╔══╝
+██║     ███████╗███████╗███████║██║  ██║██║  ██║███████╗
+╚═╝     ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
 """
 
-TAGLINE = "GitHub Spec Kit - Spec-Driven Development Toolkit"
+TAGLINE = "WriteKit - AI-Powered Novel Writing Toolkit"
 class StepTracker:
     """Track and render hierarchical steps without emojis, similar to Claude Code tree output.
     Supports live auto-refresh via an attached refresh callback.
@@ -304,8 +304,8 @@ class BannerGroup(TyperGroup):
 
 
 app = typer.Typer(
-    name="specify",
-    help="Setup tool for Specify spec-driven development projects",
+    name="writekit",
+    help="Setup tool for structured novel writing projects",
     add_completion=False,
     invoke_without_command=True,
     cls=BannerGroup,
@@ -335,7 +335,7 @@ def callback(ctx: typer.Context):
     # (help is handled by BannerGroup)
     if ctx.invoked_subcommand is None and "--help" not in sys.argv and "-h" not in sys.argv:
         show_banner()
-        console.print(Align.center("[dim]Run 'specify --help' for usage information[/dim]"))
+        console.print(Align.center("[dim]Run 'writekit --help' for usage information[/dim]"))
         console.print()
 
 
@@ -747,64 +747,64 @@ def ensure_executable_scripts(project_path: Path, tracker: StepTracker | None = 
 
 @app.command()
 def init(
-    project_name: str = typer.Argument(None, help="Name for your new project directory (optional if using --here)"),
+    novel_name: str = typer.Argument(None, help="Name for your new novel directory (optional if using --here)"),
     ai_assistant: str = typer.Option(None, "--ai", help="AI assistant to use: claude, gemini, copilot, cursor, qwen, opencode, codex, windsurf, kilocode, or auggie"),
     script_type: str = typer.Option(None, "--script", help="Script type to use: sh or ps"),
     ignore_agent_tools: bool = typer.Option(False, "--ignore-agent-tools", help="Skip checks for AI agent tools like Claude Code"),
     no_git: bool = typer.Option(False, "--no-git", help="Skip git repository initialization"),
-    here: bool = typer.Option(False, "--here", help="Initialize project in the current directory instead of creating a new one"),
+    here: bool = typer.Option(False, "--here", help="Initialize novel in the current directory instead of creating a new one"),
     force: bool = typer.Option(False, "--force", help="Force merge/overwrite when using --here (skip confirmation)"),
     skip_tls: bool = typer.Option(False, "--skip-tls", help="Skip SSL/TLS verification (not recommended)"),
     debug: bool = typer.Option(False, "--debug", help="Show verbose diagnostic output for network and extraction failures"),
     github_token: str = typer.Option(None, "--github-token", help="GitHub token to use for API requests (or set GH_TOKEN or GITHUB_TOKEN environment variable)"),
 ):
     """
-    Initialize a new Specify project from the latest template.
+    Initialize a new WriteKit novel project from the latest template.
     
     This command will:
     1. Check that required tools are installed (git is optional)
-    2. Let you choose your AI assistant (Claude Code, Gemini CLI, GitHub Copilot, Cursor, Qwen Code, opencode, Codex CLI, Windsurf, Kilo Code, or Auggie CLI)
+    2. Let you choose your AI writing assistant (Claude Code, Gemini CLI, GitHub Copilot, Cursor, Qwen Code, opencode, Codex CLI, Windsurf, Kilo Code, or Auggie CLI)
     3. Download the appropriate template from GitHub
-    4. Extract the template to a new project directory or current directory
+    4. Extract the template to a new novel directory or current directory
     5. Initialize a fresh git repository (if not --no-git and no existing repo)
-    6. Optionally set up AI assistant commands
+    6. Optionally set up AI writing assistant commands
     
     Examples:
-        specify init my-project
-        specify init my-project --ai claude
-        specify init my-project --ai gemini
-        specify init my-project --ai copilot --no-git
-        specify init my-project --ai cursor
-        specify init my-project --ai qwen
-        specify init my-project --ai opencode
-        specify init my-project --ai codex
-        specify init my-project --ai windsurf
-        specify init my-project --ai auggie
-        specify init --ignore-agent-tools my-project
-        specify init --here --ai claude
-        specify init --here --ai codex
-        specify init --here
-        specify init --here --force  # Skip confirmation when current directory not empty
+        writekit init my-fantasy-novel
+        writekit init mystery-story --ai claude
+        writekit init romance-novel --ai gemini
+        writekit init sci-fi-epic --ai copilot --no-git
+        writekit init thriller --ai cursor
+        writekit init literary-fiction --ai qwen
+        writekit init adventure-novel --ai opencode
+        writekit init drama --ai codex
+        writekit init fantasy-quest --ai windsurf
+        writekit init historical-fiction --ai auggie
+        writekit init --ignore-agent-tools my-novel
+        writekit init --here --ai claude
+        writekit init --here --ai codex
+        writekit init --here
+        writekit init --here --force  # Skip confirmation when current directory not empty
     """
     # Show banner first
     show_banner()
     
     # Validate arguments
-    if here and project_name:
-        console.print("[red]Error:[/red] Cannot specify both project name and --here flag")
+    if here and novel_name:
+        console.print("[red]Error:[/red] Cannot specify both novel name and --here flag")
+        raise typer.Exit(1)
+
+    if not here and not novel_name:
+        console.print("[red]Error:[/red] Must specify either a novel name or use --here flag")
         raise typer.Exit(1)
     
-    if not here and not project_name:
-        console.print("[red]Error:[/red] Must specify either a project name or use --here flag")
-        raise typer.Exit(1)
-    
-    # Determine project directory
+    # Determine novel directory
     if here:
-        project_name = Path.cwd().name
-        project_path = Path.cwd()
+        novel_name = Path.cwd().name
+        novel_path = Path.cwd()
         
         # Check if current directory has any files
-        existing_items = list(project_path.iterdir())
+        existing_items = list(novel_path.iterdir())
         if existing_items:
             console.print(f"[yellow]Warning:[/yellow] Current directory is not empty ({len(existing_items)} items)")
             console.print("[yellow]Template files will be merged with existing content and may overwrite existing files[/yellow]")
@@ -817,12 +817,12 @@ def init(
                     console.print("[yellow]Operation cancelled[/yellow]")
                     raise typer.Exit(0)
     else:
-        project_path = Path(project_name).resolve()
-        # Check if project directory already exists
-        if project_path.exists():
+        novel_path = Path(novel_name).resolve()
+        # Check if novel directory already exists
+        if novel_path.exists():
             error_panel = Panel(
-                f"Directory '[cyan]{project_name}[/cyan]' already exists\n"
-                "Please choose a different project name or remove the existing directory.",
+                f"Directory '[cyan]{novel_name}[/cyan]' already exists\n"
+                "Please choose a different novel name or remove the existing directory.",
                 title="[red]Directory Conflict[/red]",
                 border_style="red",
                 padding=(1, 2)
@@ -835,15 +835,15 @@ def init(
     current_dir = Path.cwd()
     
     setup_lines = [
-        "[cyan]Specify Project Setup[/cyan]",
+        "[cyan]WriteKit Novel Setup[/cyan]",
         "",
-        f"{'Project':<15} [green]{project_path.name}[/green]",
+        f"{'Novel':<15} [green]{novel_path.name}[/green]",
         f"{'Working Path':<15} [dim]{current_dir}[/dim]",
     ]
     
     # Add target path only if different from working dir
     if not here:
-        setup_lines.append(f"{'Target Path':<15} [dim]{project_path}[/dim]")
+        setup_lines.append(f"{'Target Path':<15} [dim]{novel_path}[/dim]")
     
     console.print(Panel("\n".join(setup_lines), border_style="cyan", padding=(1, 2)))
     
@@ -933,7 +933,7 @@ def init(
     
     # Download and set up project
     # New tree-based progress (no emojis); include earlier substeps
-    tracker = StepTracker("Initialize Specify Project")
+    tracker = StepTracker("Initialize WriteKit Novel")
     # Flag to allow suppressing legacy headings
     sys._specify_tracker_active = True
     # Pre steps recorded as completed before live rendering
@@ -965,18 +965,18 @@ def init(
             local_ssl_context = ssl_context if verify else False
             local_client = httpx.Client(verify=local_ssl_context)
 
-            download_and_extract_template(project_path, selected_ai, selected_script, here, verbose=False, tracker=tracker, client=local_client, debug=debug, github_token=github_token)
+            download_and_extract_template(novel_path, selected_ai, selected_script, here, verbose=False, tracker=tracker, client=local_client, debug=debug, github_token=github_token)
 
             # Ensure scripts are executable (POSIX)
-            ensure_executable_scripts(project_path, tracker=tracker)
+            ensure_executable_scripts(novel_path, tracker=tracker)
 
             # Git step
             if not no_git:
                 tracker.start("git")
-                if is_git_repo(project_path):
+                if is_git_repo(novel_path):
                     tracker.complete("git", "existing repo detected")
                 elif should_init_git:
-                    if init_git_repo(project_path, quiet=True):
+                    if init_git_repo(novel_path, quiet=True):
                         tracker.complete("git", "initialized")
                     else:
                         tracker.error("git", "init failed")
@@ -998,8 +998,8 @@ def init(
                 _label_width = max(len(k) for k, _ in _env_pairs)
                 env_lines = [f"{k.ljust(_label_width)} → [bright_black]{v}[/bright_black]" for k, v in _env_pairs]
                 console.print(Panel("\n".join(env_lines), title="Debug Environment", border_style="magenta"))
-            if not here and project_path.exists():
-                shutil.rmtree(project_path)
+            if not here and novel_path.exists():
+                shutil.rmtree(novel_path)
             raise typer.Exit(1)
         finally:
             # Force final render
@@ -1039,15 +1039,15 @@ def init(
     # Boxed "Next steps" section
     steps_lines = []
     if not here:
-        steps_lines.append(f"1. Go to the project folder: [cyan]cd {project_name}[/cyan]")
+        steps_lines.append(f"1. Go to the novel folder: [cyan]cd {novel_name}[/cyan]")
         step_num = 2
     else:
-        steps_lines.append("1. You're already in the project directory!")
+        steps_lines.append("1. You're already in the novel directory!")
         step_num = 2
 
     # Add Codex-specific setup step if needed
     if selected_ai == "codex":
-        codex_path = project_path / ".codex"
+        codex_path = novel_path / ".codex"
         quoted_path = shlex.quote(str(codex_path))
         if os.name == "nt":  # Windows
             cmd = f"setx CODEX_HOME {quoted_path}"
@@ -1058,13 +1058,13 @@ def init(
         step_num += 1
 
     steps_lines.append(f"{step_num}. Start using slash commands with your AI agent:")
-    steps_lines.append("   2.1 [cyan]/constitution[/] - Establish project principles")
-    steps_lines.append("   2.2 [cyan]/specify[/] - Create specifications")
-    steps_lines.append("   2.3 [cyan]/clarify[/] - Clarify and de-risk specification (run before [cyan]/plan[/cyan])")
-    steps_lines.append("   2.4 [cyan]/plan[/] - Create implementation plans")
-    steps_lines.append("   2.5 [cyan]/tasks[/] - Generate actionable tasks")
-    steps_lines.append("   2.6 [cyan]/analyze[/] - Validate alignment & surface inconsistencies (read-only)")
-    steps_lines.append("   2.7 [cyan]/implement[/] - Execute implementation")
+    steps_lines.append("   2.1 [cyan]/themes[/] - Define novel themes and genre")
+    steps_lines.append("   2.2 [cyan]/premise[/] - Develop story premise and characters")
+    steps_lines.append("   2.3 [cyan]/develop[/] - Develop characters and world-building (run before [cyan]/outline[/cyan])")
+    steps_lines.append("   2.4 [cyan]/outline[/] - Create 24-chapter story structure")
+    steps_lines.append("   2.5 [cyan]/scenes[/] - Plan detailed scene breakdowns")
+    steps_lines.append("   2.6 [cyan]/review[/] - Review story consistency and pacing (read-only)")
+    steps_lines.append("   2.7 [cyan]/write[/] - Write novel chapters")
 
     steps_panel = Panel("\n".join(steps_lines), title="Next Steps", border_style="cyan", padding=(1,2))
     console.print()

@@ -1,5 +1,5 @@
 #!/usr/bin/env pwsh
-# Setup implementation plan for a feature
+# Setup implementation plan for a novel
 
 [CmdletBinding()]
 param(
@@ -21,19 +21,19 @@ if ($Help) {
 . "$PSScriptRoot/common.ps1"
 
 # Get all paths and variables from common functions
-$paths = Get-FeaturePathsEnv
+$paths = Get-NovelPathsEnv
 
-# Check if we're on a proper feature branch (only for git repos)
-if (-not (Test-FeatureBranch -Branch $paths.CURRENT_BRANCH -HasGit $paths.HAS_GIT)) { 
-    exit 1 
+# Check if we're on a proper novel branch (only for git repos)
+if (-not (Test-NovelBranch -Branch $paths.CURRENT_BRANCH -HasGit $paths.HAS_GIT)) {
+    exit 1
 }
 
-# Ensure the feature directory exists
-New-Item -ItemType Directory -Path $paths.FEATURE_DIR -Force | Out-Null
+# Ensure the novel directory exists
+New-Item -ItemType Directory -Path $paths.NOVEL_DIR -Force | Out-Null
 
 # Copy plan template if it exists, otherwise note it or create empty file
-$template = Join-Path $paths.REPO_ROOT '.specify/templates/plan-template.md'
-if (Test-Path $template) { 
+$template = Join-Path $paths.REPO_ROOT '.writekit/templates/plan-template.md'
+if (Test-Path $template) {
     Copy-Item $template $paths.IMPL_PLAN -Force
     Write-Output "Copied plan template to $($paths.IMPL_PLAN)"
 } else {
@@ -44,18 +44,18 @@ if (Test-Path $template) {
 
 # Output results
 if ($Json) {
-    $result = [PSCustomObject]@{ 
-        FEATURE_SPEC = $paths.FEATURE_SPEC
+    $result = [PSCustomObject]@{
+        NOVEL_PREMISE = $paths.NOVEL_PREMISE
         IMPL_PLAN = $paths.IMPL_PLAN
-        SPECS_DIR = $paths.FEATURE_DIR
+        NOVELS_DIR = $paths.NOVEL_DIR
         BRANCH = $paths.CURRENT_BRANCH
         HAS_GIT = $paths.HAS_GIT
     }
     $result | ConvertTo-Json -Compress
 } else {
-    Write-Output "FEATURE_SPEC: $($paths.FEATURE_SPEC)"
+    Write-Output "NOVEL_PREMISE: $($paths.NOVEL_PREMISE)"
     Write-Output "IMPL_PLAN: $($paths.IMPL_PLAN)"
-    Write-Output "SPECS_DIR: $($paths.FEATURE_DIR)"
+    Write-Output "NOVELS_DIR: $($paths.NOVEL_DIR)"
     Write-Output "BRANCH: $($paths.CURRENT_BRANCH)"
     Write-Output "HAS_GIT: $($paths.HAS_GIT)"
 }

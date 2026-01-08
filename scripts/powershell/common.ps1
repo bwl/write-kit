@@ -16,9 +16,9 @@ function Get-RepoRoot {
 }
 
 function Get-CurrentBranch {
-    # First check if SPECIFY_FEATURE environment variable is set
-    if ($env:SPECIFY_FEATURE) {
-        return $env:SPECIFY_FEATURE
+    # First check if WRITEKIT_NOVEL environment variable is set
+    if ($env:WRITEKIT_NOVEL) {
+        return $env:WRITEKIT_NOVEL
     }
     
     # Then check git if available
@@ -31,26 +31,26 @@ function Get-CurrentBranch {
         # Git command failed
     }
     
-    # For non-git repos, try to find the latest feature directory
+    # For non-git repos, try to find the latest novel directory
     $repoRoot = Get-RepoRoot
-    $specsDir = Join-Path $repoRoot "specs"
-    
-    if (Test-Path $specsDir) {
-        $latestFeature = ""
+    $novelsDir = Join-Path $repoRoot "novels"
+
+    if (Test-Path $novelsDir) {
+        $latestNovel = ""
         $highest = 0
-        
-        Get-ChildItem -Path $specsDir -Directory | ForEach-Object {
+
+        Get-ChildItem -Path $novelsDir -Directory | ForEach-Object {
             if ($_.Name -match '^(\d{3})-') {
                 $num = [int]$matches[1]
                 if ($num -gt $highest) {
                     $highest = $num
-                    $latestFeature = $_.Name
+                    $latestNovel = $_.Name
                 }
             }
         }
         
-        if ($latestFeature) {
-            return $latestFeature
+        if ($latestNovel) {
+            return $latestNovel
         }
     }
     
@@ -67,49 +67,52 @@ function Test-HasGit {
     }
 }
 
-function Test-FeatureBranch {
+function Test-NovelBranch {
     param(
         [string]$Branch,
         [bool]$HasGit = $true
     )
-    
+
     # For non-git repos, we can't enforce branch naming but still provide output
     if (-not $HasGit) {
-        Write-Warning "[specify] Warning: Git repository not detected; skipped branch validation"
+        Write-Warning "[writekit] Warning: Git repository not detected; skipped branch validation"
         return $true
     }
-    
+
     if ($Branch -notmatch '^[0-9]{3}-') {
-        Write-Output "ERROR: Not on a feature branch. Current branch: $Branch"
-        Write-Output "Feature branches should be named like: 001-feature-name"
+        Write-Output "ERROR: Not on a novel branch. Current branch: $Branch"
+        Write-Output "Novel branches should be named like: 001-novel-name"
         return $false
     }
     return $true
 }
 
-function Get-FeatureDir {
+function Get-NovelDir {
     param([string]$RepoRoot, [string]$Branch)
-    Join-Path $RepoRoot "specs/$Branch"
+    Join-Path $RepoRoot "novels/$Branch"
 }
 
-function Get-FeaturePathsEnv {
+function Get-NovelPathsEnv {
     $repoRoot = Get-RepoRoot
     $currentBranch = Get-CurrentBranch
     $hasGit = Test-HasGit
-    $featureDir = Get-FeatureDir -RepoRoot $repoRoot -Branch $currentBranch
-    
+    $novelDir = Get-NovelDir -RepoRoot $repoRoot -Branch $currentBranch
+
     [PSCustomObject]@{
         REPO_ROOT     = $repoRoot
         CURRENT_BRANCH = $currentBranch
         HAS_GIT       = $hasGit
-        FEATURE_DIR   = $featureDir
-        FEATURE_SPEC  = Join-Path $featureDir 'spec.md'
-        IMPL_PLAN     = Join-Path $featureDir 'plan.md'
-        TASKS         = Join-Path $featureDir 'tasks.md'
-        RESEARCH      = Join-Path $featureDir 'research.md'
-        DATA_MODEL    = Join-Path $featureDir 'data-model.md'
-        QUICKSTART    = Join-Path $featureDir 'quickstart.md'
-        CONTRACTS_DIR = Join-Path $featureDir 'contracts'
+        NOVEL_DIR     = $novelDir
+        NOVEL_PREMISE = Join-Path $novelDir 'premise.md'
+        IMPL_PLAN     = Join-Path $novelDir 'plan.md'
+        TASKS         = Join-Path $novelDir 'tasks.md'
+        RESEARCH      = Join-Path $novelDir 'research.md'
+        DATA_MODEL    = Join-Path $novelDir 'data-model.md'
+        QUICKSTART    = Join-Path $novelDir 'quickstart.md'
+        CONTRACTS_DIR = Join-Path $novelDir 'contracts'
+        CHARACTERS_DIR = Join-Path $novelDir 'characters'
+        CHAPTERS_DIR  = Join-Path $novelDir 'chapters'
+        OUTLINE_DIR   = Join-Path $novelDir 'outline'
     }
 }
 

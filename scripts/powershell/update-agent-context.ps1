@@ -36,7 +36,7 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 . (Join-Path $ScriptDir 'common.ps1')
 
 # Acquire environment paths
-$envData = Get-FeaturePathsEnv
+$envData = Get-NovelPathsEnv
 $REPO_ROOT     = $envData.REPO_ROOT
 $CURRENT_BRANCH = $envData.CURRENT_BRANCH
 $HAS_GIT       = $envData.HAS_GIT
@@ -55,7 +55,7 @@ $KILOCODE_FILE = Join-Path $REPO_ROOT '.kilocode/rules/specify-rules.md'
 $AUGGIE_FILE   = Join-Path $REPO_ROOT '.augment/rules/specify-rules.md'
 $ROO_FILE      = Join-Path $REPO_ROOT '.roo/rules/specify-rules.md'
 
-$TEMPLATE_FILE = Join-Path $REPO_ROOT '.specify/templates/agent-file-template.md'
+$TEMPLATE_FILE = Join-Path $REPO_ROOT '.writekit/templates/agent-file-template.md'
 
 # Parsed plan data placeholders
 $script:NEW_LANG = ''
@@ -97,19 +97,19 @@ function Write-Err {
 
 function Validate-Environment {
     if (-not $CURRENT_BRANCH) {
-        Write-Err 'Unable to determine current feature'
-        if ($HAS_GIT) { Write-Info "Make sure you're on a feature branch" } else { Write-Info 'Set SPECIFY_FEATURE environment variable or create a feature first' }
+        Write-Err 'Unable to determine current novel'
+        if ($HAS_GIT) { Write-Info "Make sure you're on a novel branch" } else { Write-Info 'Set WRITEKIT_NOVEL environment variable or create a novel first' }
         exit 1
     }
     if (-not (Test-Path $NEW_PLAN)) {
         Write-Err "No plan.md found at $NEW_PLAN"
-        Write-Info 'Ensure you are working on a feature with a corresponding spec directory'
-        if (-not $HAS_GIT) { Write-Info 'Use: $env:SPECIFY_FEATURE=your-feature-name or create a new feature first' }
+        Write-Info 'Ensure you are working on a novel with a corresponding novel directory'
+        if (-not $HAS_GIT) { Write-Info 'Use: $env:WRITEKIT_NOVEL=your-novel-name or create a new novel first' }
         exit 1
     }
     if (-not (Test-Path $TEMPLATE_FILE)) {
         Write-Err "Template file not found at $TEMPLATE_FILE"
-        Write-Info 'Run specify init to scaffold .specify/templates, or add agent-file-template.md there.'
+        Write-Info 'Run writekit init to scaffold .writekit/templates, or add agent-file-template.md there.'
         exit 1
     }
 }
@@ -412,7 +412,7 @@ function Print-Summary {
 
 function Main {
     Validate-Environment
-    Write-Info "=== Updating agent context files for feature $CURRENT_BRANCH ==="
+    Write-Info "=== Updating agent context files for novel $CURRENT_BRANCH ==="
     if (-not (Parse-PlanData -PlanFile $NEW_PLAN)) { Write-Err 'Failed to parse plan data'; exit 1 }
     $success = $true
     if ($AgentType) {

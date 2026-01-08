@@ -14,9 +14,9 @@ get_repo_root() {
 
 # Get current branch, with fallback for non-git repositories
 get_current_branch() {
-    # First check if SPECIFY_FEATURE environment variable is set
-    if [[ -n "${SPECIFY_FEATURE:-}" ]]; then
-        echo "$SPECIFY_FEATURE"
+    # First check if WRITEKIT_NOVEL environment variable is set
+    if [[ -n "${WRITEKIT_NOVEL:-}" ]]; then
+        echo "$WRITEKIT_NOVEL"
         return
     fi
     
@@ -26,15 +26,15 @@ get_current_branch() {
         return
     fi
     
-    # For non-git repos, try to find the latest feature directory
+    # For non-git repos, try to find the latest novel directory
     local repo_root=$(get_repo_root)
-    local specs_dir="$repo_root/specs"
-    
-    if [[ -d "$specs_dir" ]]; then
-        local latest_feature=""
+    local novels_dir="$repo_root/novels"
+
+    if [[ -d "$novels_dir" ]]; then
+        local latest_novel=""
         local highest=0
-        
-        for dir in "$specs_dir"/*; do
+
+        for dir in "$novels_dir"/*; do
             if [[ -d "$dir" ]]; then
                 local dirname=$(basename "$dir")
                 if [[ "$dirname" =~ ^([0-9]{3})- ]]; then
@@ -42,14 +42,14 @@ get_current_branch() {
                     number=$((10#$number))
                     if [[ "$number" -gt "$highest" ]]; then
                         highest=$number
-                        latest_feature=$dirname
+                        latest_novel=$dirname
                     fi
                 fi
             fi
         done
         
-        if [[ -n "$latest_feature" ]]; then
-            echo "$latest_feature"
+        if [[ -n "$latest_novel" ]]; then
+            echo "$latest_novel"
             return
         fi
     fi
@@ -62,50 +62,53 @@ has_git() {
     git rev-parse --show-toplevel >/dev/null 2>&1
 }
 
-check_feature_branch() {
+check_novel_branch() {
     local branch="$1"
     local has_git_repo="$2"
-    
+
     # For non-git repos, we can't enforce branch naming but still provide output
     if [[ "$has_git_repo" != "true" ]]; then
-        echo "[specify] Warning: Git repository not detected; skipped branch validation" >&2
+        echo "[writekit] Warning: Git repository not detected; skipped branch validation" >&2
         return 0
     fi
-    
+
     if [[ ! "$branch" =~ ^[0-9]{3}- ]]; then
-        echo "ERROR: Not on a feature branch. Current branch: $branch" >&2
-        echo "Feature branches should be named like: 001-feature-name" >&2
+        echo "ERROR: Not on a novel branch. Current branch: $branch" >&2
+        echo "Novel branches should be named like: 001-novel-name" >&2
         return 1
     fi
-    
+
     return 0
 }
 
-get_feature_dir() { echo "$1/specs/$2"; }
+get_novel_dir() { echo "$1/novels/$2"; }
 
-get_feature_paths() {
+get_novel_paths() {
     local repo_root=$(get_repo_root)
     local current_branch=$(get_current_branch)
     local has_git_repo="false"
-    
+
     if has_git; then
         has_git_repo="true"
     fi
-    
-    local feature_dir=$(get_feature_dir "$repo_root" "$current_branch")
-    
+
+    local novel_dir=$(get_novel_dir "$repo_root" "$current_branch")
+
     cat <<EOF
 REPO_ROOT='$repo_root'
 CURRENT_BRANCH='$current_branch'
 HAS_GIT='$has_git_repo'
-FEATURE_DIR='$feature_dir'
-FEATURE_SPEC='$feature_dir/spec.md'
-IMPL_PLAN='$feature_dir/plan.md'
-TASKS='$feature_dir/tasks.md'
-RESEARCH='$feature_dir/research.md'
-DATA_MODEL='$feature_dir/data-model.md'
-QUICKSTART='$feature_dir/quickstart.md'
-CONTRACTS_DIR='$feature_dir/contracts'
+NOVEL_DIR='$novel_dir'
+NOVEL_PREMISE='$novel_dir/premise.md'
+IMPL_PLAN='$novel_dir/plan.md'
+TASKS='$novel_dir/tasks.md'
+RESEARCH='$novel_dir/research.md'
+DATA_MODEL='$novel_dir/data-model.md'
+QUICKSTART='$novel_dir/quickstart.md'
+CONTRACTS_DIR='$novel_dir/contracts'
+CHARACTERS_DIR='$novel_dir/characters'
+CHAPTERS_DIR='$novel_dir/chapters'
+OUTLINE_DIR='$novel_dir/outline'
 EOF
 }
 

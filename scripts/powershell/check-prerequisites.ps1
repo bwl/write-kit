@@ -2,7 +2,7 @@
 
 # Consolidated prerequisite checking script (PowerShell)
 #
-# This script provides unified prerequisite checking for Spec-Driven Development workflow.
+# This script provides unified prerequisite checking for Novel Writing workflow.
 # It replaces the functionality previously spread across multiple scripts.
 #
 # Usage: ./check-prerequisites.ps1 [OPTIONS]
@@ -56,29 +56,29 @@ EXAMPLES:
 # Source common functions
 . "$PSScriptRoot/common.ps1"
 
-# Get feature paths and validate branch
-$paths = Get-FeaturePathsEnv
+# Get novel paths and validate branch
+$paths = Get-NovelPathsEnv
 
-if (-not (Test-FeatureBranch -Branch $paths.CURRENT_BRANCH -HasGit:$paths.HAS_GIT)) { 
-    exit 1 
+if (-not (Test-NovelBranch -Branch $paths.CURRENT_BRANCH -HasGit:$paths.HAS_GIT)) {
+    exit 1
 }
 
 # If paths-only mode, output paths and exit (support combined -Json -PathsOnly)
 if ($PathsOnly) {
     if ($Json) {
         [PSCustomObject]@{
-            REPO_ROOT    = $paths.REPO_ROOT
-            BRANCH       = $paths.CURRENT_BRANCH
-            FEATURE_DIR  = $paths.FEATURE_DIR
-            FEATURE_SPEC = $paths.FEATURE_SPEC
-            IMPL_PLAN    = $paths.IMPL_PLAN
-            TASKS        = $paths.TASKS
+            REPO_ROOT     = $paths.REPO_ROOT
+            BRANCH        = $paths.CURRENT_BRANCH
+            NOVEL_DIR     = $paths.NOVEL_DIR
+            NOVEL_PREMISE = $paths.NOVEL_PREMISE
+            IMPL_PLAN     = $paths.IMPL_PLAN
+            TASKS         = $paths.TASKS
         } | ConvertTo-Json -Compress
     } else {
         Write-Output "REPO_ROOT: $($paths.REPO_ROOT)"
         Write-Output "BRANCH: $($paths.CURRENT_BRANCH)"
-        Write-Output "FEATURE_DIR: $($paths.FEATURE_DIR)"
-        Write-Output "FEATURE_SPEC: $($paths.FEATURE_SPEC)"
+        Write-Output "NOVEL_DIR: $($paths.NOVEL_DIR)"
+        Write-Output "NOVEL_PREMISE: $($paths.NOVEL_PREMISE)"
         Write-Output "IMPL_PLAN: $($paths.IMPL_PLAN)"
         Write-Output "TASKS: $($paths.TASKS)"
     }
@@ -86,21 +86,21 @@ if ($PathsOnly) {
 }
 
 # Validate required directories and files
-if (-not (Test-Path $paths.FEATURE_DIR -PathType Container)) {
-    Write-Output "ERROR: Feature directory not found: $($paths.FEATURE_DIR)"
-    Write-Output "Run /specify first to create the feature structure."
+if (-not (Test-Path $paths.NOVEL_DIR -PathType Container)) {
+    Write-Output "ERROR: Novel directory not found: $($paths.NOVEL_DIR)"
+    Write-Output "Run /writekit first to create the novel structure."
     exit 1
 }
 
 if (-not (Test-Path $paths.IMPL_PLAN -PathType Leaf)) {
-    Write-Output "ERROR: plan.md not found in $($paths.FEATURE_DIR)"
-    Write-Output "Run /plan first to create the implementation plan."
+    Write-Output "ERROR: plan.md not found in $($paths.NOVEL_DIR)"
+    Write-Output "Run /plan first to create the story plan."
     exit 1
 }
 
 # Check for tasks.md if required
 if ($RequireTasks -and -not (Test-Path $paths.TASKS -PathType Leaf)) {
-    Write-Output "ERROR: tasks.md not found in $($paths.FEATURE_DIR)"
+    Write-Output "ERROR: tasks.md not found in $($paths.NOVEL_DIR)"
     Write-Output "Run /tasks first to create the task list."
     exit 1
 }
@@ -127,13 +127,13 @@ if ($IncludeTasks -and (Test-Path $paths.TASKS)) {
 # Output results
 if ($Json) {
     # JSON output
-    [PSCustomObject]@{ 
-        FEATURE_DIR = $paths.FEATURE_DIR
-        AVAILABLE_DOCS = $docs 
+    [PSCustomObject]@{
+        NOVEL_DIR = $paths.NOVEL_DIR
+        AVAILABLE_DOCS = $docs
     } | ConvertTo-Json -Compress
 } else {
     # Text output
-    Write-Output "FEATURE_DIR:$($paths.FEATURE_DIR)"
+    Write-Output "NOVEL_DIR:$($paths.NOVEL_DIR)"
     Write-Output "AVAILABLE_DOCS:"
     
     # Show status of each potential document

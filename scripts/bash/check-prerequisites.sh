@@ -2,7 +2,7 @@
 
 # Consolidated prerequisite checking script
 #
-# This script provides unified prerequisite checking for Spec-Driven Development workflow.
+# This script provides unified prerequisite checking for Novel Writing workflow.
 # It replaces the functionality previously spread across multiple scripts.
 #
 # Usage: ./check-prerequisites.sh [OPTIONS]
@@ -78,21 +78,21 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
 
-# Get feature paths and validate branch
-eval $(get_feature_paths)
-check_feature_branch "$CURRENT_BRANCH" "$HAS_GIT" || exit 1
+# Get novel paths and validate branch
+eval $(get_novel_paths)
+check_novel_branch "$CURRENT_BRANCH" "$HAS_GIT" || exit 1
 
 # If paths-only mode, output paths and exit (support JSON + paths-only combined)
 if $PATHS_ONLY; then
     if $JSON_MODE; then
         # Minimal JSON paths payload (no validation performed)
-        printf '{"REPO_ROOT":"%s","BRANCH":"%s","FEATURE_DIR":"%s","FEATURE_SPEC":"%s","IMPL_PLAN":"%s","TASKS":"%s"}\n' \
-            "$REPO_ROOT" "$CURRENT_BRANCH" "$FEATURE_DIR" "$FEATURE_SPEC" "$IMPL_PLAN" "$TASKS"
+        printf '{"REPO_ROOT":"%s","BRANCH":"%s","NOVEL_DIR":"%s","NOVEL_PREMISE":"%s","IMPL_PLAN":"%s","TASKS":"%s"}\n' \
+            "$REPO_ROOT" "$CURRENT_BRANCH" "$NOVEL_DIR" "$NOVEL_PREMISE" "$IMPL_PLAN" "$TASKS"
     else
         echo "REPO_ROOT: $REPO_ROOT"
         echo "BRANCH: $CURRENT_BRANCH"
-        echo "FEATURE_DIR: $FEATURE_DIR"
-        echo "FEATURE_SPEC: $FEATURE_SPEC"
+        echo "NOVEL_DIR: $NOVEL_DIR"
+        echo "NOVEL_PREMISE: $NOVEL_PREMISE"
         echo "IMPL_PLAN: $IMPL_PLAN"
         echo "TASKS: $TASKS"
     fi
@@ -100,21 +100,21 @@ if $PATHS_ONLY; then
 fi
 
 # Validate required directories and files
-if [[ ! -d "$FEATURE_DIR" ]]; then
-    echo "ERROR: Feature directory not found: $FEATURE_DIR" >&2
-    echo "Run /specify first to create the feature structure." >&2
+if [[ ! -d "$NOVEL_DIR" ]]; then
+    echo "ERROR: Novel directory not found: $NOVEL_DIR" >&2
+    echo "Run /writekit first to create the novel structure." >&2
     exit 1
 fi
 
 if [[ ! -f "$IMPL_PLAN" ]]; then
-    echo "ERROR: plan.md not found in $FEATURE_DIR" >&2
-    echo "Run /plan first to create the implementation plan." >&2
+    echo "ERROR: plan.md not found in $NOVEL_DIR" >&2
+    echo "Run /plan first to create the story plan." >&2
     exit 1
 fi
 
 # Check for tasks.md if required
 if $REQUIRE_TASKS && [[ ! -f "$TASKS" ]]; then
-    echo "ERROR: tasks.md not found in $FEATURE_DIR" >&2
+    echo "ERROR: tasks.md not found in $NOVEL_DIR" >&2
     echo "Run /tasks first to create the task list." >&2
     exit 1
 fi
@@ -147,11 +147,11 @@ if $JSON_MODE; then
         json_docs=$(printf '"%s",' "${docs[@]}")
         json_docs="[${json_docs%,}]"
     fi
-    
-    printf '{"FEATURE_DIR":"%s","AVAILABLE_DOCS":%s}\n' "$FEATURE_DIR" "$json_docs"
+
+    printf '{"NOVEL_DIR":"%s","AVAILABLE_DOCS":%s}\n' "$NOVEL_DIR" "$json_docs"
 else
     # Text output
-    echo "FEATURE_DIR:$FEATURE_DIR"
+    echo "NOVEL_DIR:$NOVEL_DIR"
     echo "AVAILABLE_DOCS:"
     
     # Show status of each potential document

@@ -53,7 +53,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
 
 # Get all paths and variables from common functions
-eval $(get_feature_paths)
+eval $(get_novel_paths)
 
 NEW_PLAN="$IMPL_PLAN"  # Alias for compatibility with existing code
 AGENT_TYPE="${1:-}"
@@ -71,7 +71,7 @@ AUGGIE_FILE="$REPO_ROOT/.augment/rules/specify-rules.md"
 ROO_FILE="$REPO_ROOT/.roo/rules/specify-rules.md"
 
 # Template file
-TEMPLATE_FILE="$REPO_ROOT/.specify/templates/agent-file-template.md"
+TEMPLATE_FILE="$REPO_ROOT/.writekit/templates/agent-file-template.md"
 
 # Global variables for parsed plan data
 NEW_LANG=""
@@ -115,13 +115,13 @@ trap cleanup EXIT INT TERM
 #==============================================================================
 
 validate_environment() {
-    # Check if we have a current branch/feature (git or non-git)
+    # Check if we have a current branch/novel (git or non-git)
     if [[ -z "$CURRENT_BRANCH" ]]; then
-        log_error "Unable to determine current feature"
+        log_error "Unable to determine current novel"
         if [[ "$HAS_GIT" == "true" ]]; then
-            log_info "Make sure you're on a feature branch"
+            log_info "Make sure you're on a novel branch"
         else
-            log_info "Set SPECIFY_FEATURE environment variable or create a feature first"
+            log_info "Set WRITEKIT_NOVEL environment variable or create a novel first"
         fi
         exit 1
     fi
@@ -129,9 +129,9 @@ validate_environment() {
     # Check if plan.md exists
     if [[ ! -f "$NEW_PLAN" ]]; then
         log_error "No plan.md found at $NEW_PLAN"
-        log_info "Make sure you're working on a feature with a corresponding spec directory"
+        log_info "Make sure you're working on a novel with a corresponding novel directory"
         if [[ "$HAS_GIT" != "true" ]]; then
-            log_info "Use: export SPECIFY_FEATURE=your-feature-name or create a new feature first"
+            log_info "Use: export WRITEKIT_NOVEL=your-novel-name or create a new novel first"
         fi
         exit 1
     fi
@@ -676,7 +676,7 @@ main() {
     # Validate environment before proceeding
     validate_environment
     
-    log_info "=== Updating agent context files for feature $CURRENT_BRANCH ==="
+    log_info "=== Updating agent context files for novel $CURRENT_BRANCH ==="
     
     # Parse the plan file to extract project information
     if ! parse_plan_data "$NEW_PLAN"; then
